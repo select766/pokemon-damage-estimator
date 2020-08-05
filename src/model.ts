@@ -49,3 +49,16 @@ export interface MyParty {
 export const EmptyMyParty = {
     myPokemons: []
 }
+
+export interface OpponentPokemon {
+    name: string;
+    chosen: boolean;
+}
+
+export interface OpponentParty {
+    opponentPokemons: OpponentPokemon[];
+}
+
+export const EmptyOpponentParty: OpponentParty = {
+    opponentPokemons: []
+}
