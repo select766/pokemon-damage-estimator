@@ -4,6 +4,7 @@ import { MyParty, EmptyMyParty, OpponentParty, EmptyOpponentParty } from './mode
 import { MyPartyEditor } from './MyPartyEditor';
 import { OpponentPartyEditor } from './OpponentPartyEditor';
 import { useLocation, useHistory } from 'react-router-dom';
+import { DamageView } from './DamageView';
 
 function App() {
   const location = useLocation();
@@ -11,7 +12,7 @@ function App() {
 
   const urlSearchParams = new URLSearchParams(location.search);
   const partyJSON = urlSearchParams.get('party');
-  const party: { myParty: MyParty, opponentParty: OpponentParty } = partyJSON ? JSON.parse(partyJSON) : { myParty: EmptyMyParty, opponentParty: EmptyOpponentParty };
+  const party: { myParty: MyParty; opponentParty: OpponentParty } = partyJSON ? JSON.parse(partyJSON) : { myParty: EmptyMyParty, opponentParty: EmptyOpponentParty };
   const setMyParty = (newMyParty: MyParty) => {
     history.push(`/?party=${JSON.stringify({ ...party, myParty: newMyParty })}`);
   }
@@ -23,6 +24,7 @@ function App() {
     <div className="App">
       <MyPartyEditor value={party.myParty} onChange={setMyParty} />
       <OpponentPartyEditor value={party.opponentParty} onChange={setOpponentParty} />
+      <DamageView myParty={party.myParty} opponentParty={party.opponentParty} />
     </div>
   );
 }

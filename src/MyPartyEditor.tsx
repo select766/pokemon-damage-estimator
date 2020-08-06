@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import pokemonDataset from './data/pokemonDataset.json';
 import { MyParty, MyPokemon, PokemonType, PokemonTypeList, EmptyMyPokemon, MyPokemonMove, MoveKind, EmptyMyPokemonMove } from './model';
 import { PokemonSelect } from './PokemonSelect';
 
@@ -24,7 +23,7 @@ function MoveInput(props: { value: MyPokemonMove, onChange: (value: MyPokemonMov
             <option value="special">特殊</option>
             <option value="status">変化</option>
         </select>
-        威力: <input type="number" value={value.attack.toString()} min={0} max={999} onChange={(e) => onChange({ ...value, attack: Number(e.target.value) })} />
+        威力: <input type="number" value={value.power.toString()} min={0} max={999} onChange={(e) => onChange({ ...value, power: Number(e.target.value) })} />
     </div>
     )
 }
