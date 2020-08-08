@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { OpponentParty } from './model';
 import { PokemonSelect } from './PokemonSelect';
 
@@ -9,12 +9,16 @@ export interface OpponentPartyEditorProps {
 
 export function OpponentPartyEditor(props: OpponentPartyEditorProps) {
     const [newPokemon, setNewPokemon] = useState<string>('');
+    const newPokemonInputRef = useRef<HTMLInputElement | null>(null);
     const pokes = props.value.opponentPokemons;
     const onAddPokemonClick = useCallback(() => {
         const newPokes = [...props.value.opponentPokemons];
         newPokes.push({ name: newPokemon, chosen: true });
         props.onChange({ ...props.value, opponentPokemons: newPokes });
         setNewPokemon('');
+        setTimeout(() => {
+            newPokemonInputRef.current?.focus();
+        }, 10);
     }, [props, newPokemon]);
     const onChosenChange = useCallback((index: number, checked: boolean) => {
         const newPokes = [...props.value.opponentPokemons];
@@ -29,7 +33,7 @@ export function OpponentPartyEditor(props: OpponentPartyEditorProps) {
     return (<div>
         <h2>相手</h2>
         <div>
-            <PokemonSelect value={newPokemon} onChange={setNewPokemon} />
+            <PokemonSelect ref={newPokemonInputRef} value={newPokemon} onChange={setNewPokemon} />
             <button onClick={onAddPokemonClick}>追加</button>
         </div>
         <div>

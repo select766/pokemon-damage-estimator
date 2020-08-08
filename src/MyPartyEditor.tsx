@@ -27,12 +27,12 @@ function MoveInput(props: { value: MyPokemonMove, onChange: (value: MyPokemonMov
     return (<div>
         技名:<select value={value.name} onChange={(e) => onSelectMoveName(e.target.value)}>
             <option value="">---技選択---</option>
-            {moveDataset.map((moveInfo) => <option value={moveInfo.name}>{moveInfo.name}</option>)}
+            {moveDataset.map((moveInfo) => <option key={moveInfo.name} value={moveInfo.name}>{moveInfo.name}</option>)}
         </select>
         <input type="text" value={value.name} onChange={(e) => onChange({ ...value, name: e.target.value })} />
         技タイプ:<PokemonTypeSelect value={value.type} onChange={(type) => onChange({ ...value, type })} />
         種別:<select value={value.moveKind} onChange={(e) => onChange({ ...value, moveKind: e.target.value as MoveKind })}>
-            {MoveKindList.map((moveKind) => <option value={moveKind}>{MoveKindLong[moveKind]}</option>)}
+            {MoveKindList.map((moveKind) => <option key={moveKind} value={moveKind}>{MoveKindLong[moveKind]}</option>)}
         </select>
         威力: <input type="number" value={value.power.toString()} min={0} max={999} onChange={(e) => onChange({ ...value, power: Number(e.target.value) })} />
     </div>
