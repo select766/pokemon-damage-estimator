@@ -6,6 +6,7 @@ import { DamageView } from './DamageView';
 import { ExternalSiteView } from './ExternalSiteView';
 import { PartyEditor } from './PartyEditor';
 import { MatchSelector, SelectedMatch, SelectedMatchPokemon } from './MatchSelector';
+import { Logging } from './Logging';
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
       </div>
       <div>
         <MatchSelector party={party} selectedMatch={selectedMatch} onChange={onMatchSelectorChange} />
+        <Logging party={party} selectedMatchPokemon={selectedMatchPokemon} />
         <DamageView party={party} selectedMatchPokemon={selectedMatchPokemon} />
       </div>
       <ExternalSiteView pokemonName={selectedMatchPokemon.opponentPokemon?.name || ''} />

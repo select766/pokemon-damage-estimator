@@ -56,3 +56,15 @@
 .MatchSelector .chosen {
     text-decoration: underline solid red;
 }
+
+.Logging {
+    width: 100%;
+    margin: 8px;
+    border: 1px solid gray;
+}
+
+.Logging textarea {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+}
