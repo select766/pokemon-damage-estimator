@@ -9,13 +9,13 @@ export interface MyPokemonEditorProps {
     onChange: (value: MyPokemon) => void;
 }
 
-function PokemonTypeSelect(props: { value: PokemonType, onChange: (value: PokemonType) => void }) {
+function PokemonTypeSelect(props: { value: PokemonType, onChange: (value: PokemonType) => void, emptyMessage: string }) {
     return (<select value={props.value} onChange={(e) => props.onChange(e.target.value as PokemonType)}>
-        {PokemonTypeList.map((pokemonType) => <option key={pokemonType} value={pokemonType}>{pokemonType}</option>)}
+        {PokemonTypeList.map((pokemonType) => <option key={pokemonType} value={pokemonType}>{pokemonType || props.emptyMessage}</option>)}
     </select>);
 }
 
-function MoveInput({value, onChange}: { value: MyPokemonMove, onChange: (value: MyPokemonMove) => void }) {
+function MoveInput({ value, onChange }: { value: MyPokemonMove, onChange: (value: MyPokemonMove) => void }) {
     const onSelectMoveName = useCallback((name: string) => {
         const moveInfo = moveDataset.find((m) => m.name === name);
         if (!moveInfo) {
@@ -29,8 +29,8 @@ function MoveInput({value, onChange}: { value: MyPokemonMove, onChange: (value: 
             {moveDataset.map((moveInfo) => <option key={moveInfo.name} value={moveInfo.name}>{moveInfo.name}</option>)}
         </select>
         <input type="text" value={value.name} onChange={(e) => onChange({ ...value, name: e.target.value })} />
-        技タイプ:<PokemonTypeSelect value={value.type} onChange={(type) => onChange({ ...value, type })} />
-        種別:<select value={value.moveKind} onChange={(e) => onChange({ ...value, moveKind: e.target.value as MoveKind })}>
+        <PokemonTypeSelect value={value.type} onChange={(type) => onChange({ ...value, type })} emptyMessage="タイプ" />
+        <select value={value.moveKind} onChange={(e) => onChange({ ...value, moveKind: e.target.value as MoveKind })}>
             {MoveKindList.map((moveKind) => <option key={moveKind} value={moveKind}>{MoveKindLong[moveKind]}</option>)}
         </select>
         威力: <input type="number" value={value.power.toString()} min={0} max={999} onChange={(e) => onChange({ ...value, power: Number(e.target.value) })} />
@@ -38,7 +38,8 @@ function MoveInput({value, onChange}: { value: MyPokemonMove, onChange: (value: 
     );
 }
 
-export function MyPokemonEditor({value, onChange}: MyPokemonEditorProps) {    const [newMove, setNewMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
+export function MyPokemonEditor({ value, onChange }: MyPokemonEditorProps) {
+    const [newMove, setNewMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
     const [newDynamaxMove, setNewDinamaxMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
     useEffect(() => {
         // 通常技に応じて対応するダイマックス技候補を表示
@@ -70,8 +71,8 @@ export function MyPokemonEditor({value, onChange}: MyPokemonEditorProps) {    co
     }, [value, onChange]);
     return (<div>
         <PokemonSelect value={value.name} onChange={(value) => onSelectPokemon(value)} />
-        タイプ1:<PokemonTypeSelect value={value.attrs.type1} onChange={(t) => onChange({ ...value, attrs: { ...value.attrs, type1: t } })} />
-        タイプ2:<PokemonTypeSelect value={value.attrs.type2} onChange={(t) => onChange({ ...value, attrs: { ...value.attrs, type2: t } })} />
+        <PokemonTypeSelect value={value.attrs.type1} onChange={(t) => onChange({ ...value, attrs: { ...value.attrs, type1: t } })} emptyMessage="タイプ1" />
+        <PokemonTypeSelect value={value.attrs.type2} onChange={(t) => onChange({ ...value, attrs: { ...value.attrs, type2: t } })} emptyMessage="タイプ2" />
         HP: <input type="number" min={0} max={999} value={value.attrs.hp.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, hp: Number(e.target.value) } })} />
         A: <input type="number" min={0} max={999} value={value.attrs.a.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, a: Number(e.target.value) } })} />
         B: <input type="number" min={0} max={999} value={value.attrs.b.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, b: Number(e.target.value) } })} />
