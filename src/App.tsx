@@ -31,11 +31,12 @@ function App() {
         <input type="checkbox" checked={displayPartyEditor} onChange={(e) => setDisplayPartyEditor(e.target.checked)} />
         <div style={{ display: displayPartyEditor ? "block" : "none" }}>
           <PartyEditor party={party} onChange={setParty} />
+          <div className="about">ポケモンバトルのダメージ予測ツール <a href="https://github.com/select766/pokemon-damage-estimator">https://github.com/select766/pokemon-damage-estimator</a></div>
         </div>
       </div>
       <div>
-      <MatchSelector party={party} selectedMatch={selectedMatch} onChange={onMatchSelectorChange} />
-      <DamageView party={party} selectedMatchPokemon={selectedMatchPokemon} />
+        <MatchSelector party={party} selectedMatch={selectedMatch} onChange={onMatchSelectorChange} />
+        <DamageView party={party} selectedMatchPokemon={selectedMatchPokemon} />
       </div>
       <ExternalSiteView pokemonName={selectedMatchPokemon.opponentPokemon?.name || ''} />
     </div>

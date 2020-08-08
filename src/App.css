@@ -8,13 +8,21 @@
     width: 300px;
 }
 
+.about {
+    width: 300px;
+}
+
 .ExternalSiteView {
     margin-left: auto;
 }
 
+.ExternalSiteView .wikiLink {
+    height: 20px;
+}
+
 .ExternalSiteView iframe {
     width: 768px;
-    height: 100%;
+    height: calc(100% - 20px);
     border: none;
 }
 
