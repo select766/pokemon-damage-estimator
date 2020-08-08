@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { MyParty, MyPokemon, PokemonType, PokemonTypeList, EmptyMyPokemon, MyPokemonMove, MoveKind, EmptyMyPokemonMove, PokemonTypeShort, MoveKindLong, MoveKindList, MoveKindShort } from './model';
+import React, { useState, useCallback, useEffect } from 'react';
+import { MyParty, MyPokemon, PokemonType, PokemonTypeList, EmptyMyPokemon, MyPokemonMove, MoveKind, EmptyMyPokemonMove, PokemonTypeShort, MoveKindLong, MoveKindList, MoveKindShort, DynamaxMoveNames, getDynamaxMovePower } from './model';
 import { PokemonSelect } from './PokemonSelect';
 import pokemonDataset from './data/pokemonDataset.json';
 import moveDataset from './data/moveDataset.json';
@@ -42,10 +42,30 @@ function MoveInput(props: { value: MyPokemonMove, onChange: (value: MyPokemonMov
 export function MyPokemonEditor(props: MyPokemonEditorProps) {
     const pokemon = props.value;
     const [newMove, setNewMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
+    const [newDynamaxMove, setNewDinamaxMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
+    useEffect(() => {
+        // 通常技に応じて対応するダイマックス技候補を表示
+        if (newMove.power === 0) {
+            setNewDinamaxMove({ name: DynamaxMoveNames[''], type: 'ノーマル', moveKind: 'status', power: 0 });
+        } else {
+            setNewDinamaxMove({ name: DynamaxMoveNames[newMove.type], type: newMove.type, moveKind: newMove.moveKind, power: getDynamaxMovePower(newMove.type, newMove.power) });
+        }
+    }, [newMove]);
     const onSelectPokemon = useCallback((name: string) => {
         const d = pokemonDataset[name as keyof typeof pokemonDataset] as PokemonData;
         props.onChange({ ...pokemon, name, attrs: { ...pokemon.attrs, type1: d.type1, type2: d.type2 } });
     }, [pokemon, props.onChange]);
+    const onSortMoveClick = useCallback((index: number, direction: number) => {
+        const newMoves = [...pokemon.moves];
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= newMoves.length) {
+            return;
+        }
+        const tmp = newMoves[index];
+        newMoves[index] = newMoves[newIndex];
+        newMoves[newIndex] = tmp;
+        props.onChange({ ...pokemon, moves: newMoves });
+    }, [props]);
     const onDeleteMove = useCallback((index: number) => {
         const newMoves = [...pokemon.moves];
         newMoves.splice(index, 1);
@@ -61,12 +81,22 @@ export function MyPokemonEditor(props: MyPokemonEditorProps) {
         C: <input type="number" min={0} max={999} value={pokemon.attrs.c.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, c: Number(e.target.value) } })} />
         D: <input type="number" min={0} max={999} value={pokemon.attrs.d.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, d: Number(e.target.value) } })} />
         S: <input type="number" min={0} max={999} value={pokemon.attrs.s.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, s: Number(e.target.value) } })} />
-        技: <ul>{pokemon.moves.map((move, i) => <li>{move.name}({PokemonTypeShort[move.type]}{move.power}{MoveKindShort[move.moveKind]})<button onClick={(e) => onDeleteMove(i)}>🗑</button></li>)}</ul>
+        技: <ul>{pokemon.moves.map((move, i) => (
+            <li>{move.name}({PokemonTypeShort[move.type]}{move.power}{MoveKindShort[move.moveKind]})
+                <button onClick={(e) => onSortMoveClick(i, -1)}>↑</button>
+                <button onClick={(e) => onSortMoveClick(i, 1)}>↓</button>
+                <button onClick={(e) => onDeleteMove(i)}>🗑</button>
+            </li>))}</ul>
         <MoveInput value={newMove} onChange={setNewMove} />
         <button onClick={() => {
             props.onChange({ ...pokemon, moves: [...pokemon.moves, newMove] });
             setNewMove(EmptyMyPokemonMove);
         }}>技追加</button>
+        <MoveInput value={newDynamaxMove} onChange={setNewDinamaxMove} />
+        <button onClick={() => {
+            props.onChange({ ...pokemon, moves: [...pokemon.moves, newDynamaxMove] });
+            setNewDinamaxMove(EmptyMyPokemonMove);
+        }}>DM技追加</button>
         <a href="https://wiki.xn--rckteqa2e.com/wiki/%E3%83%80%E3%82%A4%E3%83%9E%E3%83%83%E3%82%AF%E3%82%B9%E3%82%8F%E3%81%96" target="_blank" rel="noreferrer noopener">DM情報</a>
     </div>);
 }

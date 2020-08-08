@@ -35,6 +35,64 @@ export const PokemonTypeShort: { [key in PokemonType]: string } = {
     'フェアリー': 'フ',
 };
 
+export const DynamaxMoveNames: { [key in PokemonType]: string } = {
+    '': 'ダイウォール',
+    'ノーマル': 'ダイアタック',
+    'かくとう': 'ダイナックル',
+    'ひこう': 'ダイジェット',
+    'どく': 'ダイアシッド',
+    'じめん': 'ダイアース',
+    'いわ': 'ダイロック',
+    'むし': 'ダイワーム',
+    'ゴースト': 'ダイホロウ',
+    'はがね': 'ダイスチル',
+    'ほのお': 'ダイバーン',
+    'みず': 'ダイストリーム',
+    'くさ': 'ダイソウゲン',
+    'でんき': 'ダイサンダー',
+    'エスパー': 'ダイサイコ',
+    'こおり': 'ダイアイス',
+    'ドラゴン': 'ダイドラグーン',
+    'あく': 'ダイアーク',
+    'フェアリー': 'ダイフェアリー',
+};
+
+export function getDynamaxMovePower(type: PokemonType, originalPower: number): number {
+    if (type === 'かくとう' || type === 'どく') {
+        if (originalPower <= 40) {
+            return 70;
+        } else if (originalPower <= 50) {
+            return 75;
+        } else if (originalPower <= 60) {
+            return 80;
+        } else if (originalPower <= 70) {
+            return 85;
+        } else if (originalPower <= 100) {
+            return 90;
+        } else if (originalPower <= 140) {
+            return 95;
+        } else {
+            return 100;
+        }
+    } else {
+        if (originalPower <= 40) {
+            return 90;
+        } else if (originalPower <= 50) {
+            return 100;
+        } else if (originalPower <= 60) {
+            return 110;
+        } else if (originalPower <= 70) {
+            return 120;
+        } else if (originalPower <= 100) {
+            return 130;
+        } else if (originalPower <= 140) {
+            return 140;
+        } else {
+            return 150;
+        }
+    }
+}
+
 export interface PokemonData {
     name: string;
     type1: PokemonType;
