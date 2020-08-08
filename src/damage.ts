@@ -63,3 +63,43 @@ export function CalcDamage(
     }
     return value;
 }
+
+/**
+ * タイプ相性を表示するための文字を取得
+ * @param moveType 
+ * @param defenderType1 
+ * @param defenderType2 
+ */
+export function GetTypeMatchCharacter(moveType: PokemonType, defenderType1: PokemonType, defenderType2: PokemonType) {
+    switch (typeMatch[moveType][defenderType1] * typeMatch[moveType][defenderType2]) {
+        case 0:
+            return '０';
+        case 1:
+            return '¼';
+        case 2:
+            return '½';
+        case 4:
+            return '１';
+        case 8:
+            return '２';
+        case 16:
+            return '４';
+        default:
+            return '？';
+    }
+}
+
+/**
+ * タイプ一致技判定
+ * @param moveType 
+ * @param attackerType1 
+ * @param attackerType2 
+ */
+export function IsSameTypeMove(moveType: PokemonType, attackerType1: PokemonType, attackerType2: PokemonType) {
+    if (moveType !== '') {
+        if (moveType === attackerType1 || moveType === attackerType2) {
+            return true;
+        }
+    }
+    return false;
+}

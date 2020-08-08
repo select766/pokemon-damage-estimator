@@ -33,6 +33,14 @@
     flex-wrap: wrap;
 }
 
+.DamageView .sameTypeMove {
+    background: linear-gradient(transparent 80%, red 20%);
+}
+
+.DamageView .numeric {
+    text-align: right;
+}
+
 .MatchSelector .selected {
     background-color: orange;
 }
