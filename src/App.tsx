@@ -5,6 +5,7 @@ import { MyPartyEditor } from './MyPartyEditor';
 import { OpponentPartyEditor } from './OpponentPartyEditor';
 import { useLocation, useHistory } from 'react-router-dom';
 import { DamageView } from './DamageView';
+import { ExternalSiteView } from './ExternalSiteView';
 
 function App() {
   const location = useLocation();
@@ -25,6 +26,7 @@ function App() {
       <MyPartyEditor value={party.myParty} onChange={setMyParty} />
       <OpponentPartyEditor value={party.opponentParty} onChange={setOpponentParty} />
       <DamageView myParty={party.myParty} opponentParty={party.opponentParty} />
+      <ExternalSiteView pokemonName={party.opponentParty.opponentPokemons[0]?.name || ''} />
     </div>
   );
 }
