@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/pokemon-damage-estimator/precache-manifest.cba27d7fd11a0615fb2c28a581f4e8ca.js"
+  "/pokemon-damage-estimator/precache-manifest.bab8dcc0bbeaf777f34e14cef32db543.js"
 );
 
 self.addEventListener('message', (event) => {

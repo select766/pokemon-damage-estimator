@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "87d0db3ec4f68b57b44d3feb46a1164f",
+    "revision": "4fbfd8b154549c37caf1f50c2e957a00",
     "url": "/pokemon-damage-estimator/index.html"
   },
   {
-    "revision": "509194ef51f763151429",
+    "revision": "fea640bd6b776607d8ed",
     "url": "/pokemon-damage-estimator/static/css/main.10405320.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/pokemon-damage-estimator/static/js/2.74559b4d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "509194ef51f763151429",
-    "url": "/pokemon-damage-estimator/static/js/main.bf2e44a9.chunk.js"
+    "revision": "fea640bd6b776607d8ed",
+    "url": "/pokemon-damage-estimator/static/js/main.32ce2d6f.chunk.js"
   },
   {
     "revision": "7ea46d711d98defe0693",
