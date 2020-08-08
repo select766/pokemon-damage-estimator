@@ -33,7 +33,7 @@ function pokemonNameToCanonical(pokemonName: string): string {
 }
 
 function pokemonNameToURL(pokemonName: string) {
-    return `http://wiki.pokebattle.net/${pokemonNameToCanonical(pokemonName)}`;
+    return `https://pokemon-wiki.net/${pokemonNameToCanonical(pokemonName)}`;
 }
 
 function pushCachedUrl(cachedUrls: string[], url: string): string[] {
