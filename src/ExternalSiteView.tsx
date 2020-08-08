@@ -38,7 +38,7 @@ function pokemonNameToURL(pokemonName: string) {
 
 export function ExternalSiteView(props: { pokemonName: string }) {
     const url = useMemo(() => pokemonNameToURL(props.pokemonName), [props.pokemonName]);
-    return (<div>
-        <iframe src={url} width={768} height={500} referrerPolicy='no-referrer'></iframe>
+    return (<div className="ExternalSiteView">
+        <iframe src={url} referrerPolicy='no-referrer'></iframe>
     </div>)
 }

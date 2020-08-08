@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import pokemonDataset from './data/pokemonDataset.json';
-import { MyParty, MyPokemon, PokemonType, PokemonTypeList, MyPokemonMove, MoveKind, OpponentParty, PokemonTypeShort, OpponentPokemon, PokemonData } from './model';
+import { MyParty, MyPokemon, PokemonType, PokemonTypeList, MyPokemonMove, MoveKind, OpponentParty, PokemonTypeShort, OpponentPokemon, PokemonData, BothParty } from './model';
 import { CalcStatusNonHP, defaultLevel, ivMax, evMax, evMin, ivMin, CalcDamage, CalcStatusHP } from './damage';
+import { SelectedMatchPokemon } from './MatchSelector';
 
 function BaseStatView({ pokemonName }: { pokemonName: string }) {
     const d = pokemonDataset[pokemonName as keyof typeof pokemonDataset] as PokemonData;
@@ -95,23 +96,23 @@ function DefendDamageView({ myPokemon, opponentPokemon }: { myPokemon: MyPokemon
 }
 
 export interface DamageViewProps {
-    myParty: MyParty;
-    opponentParty: OpponentParty;
+    party: BothParty;
+    selectedMatchPokemon: SelectedMatchPokemon;
 }
 
-export function DamageView({ myParty, opponentParty }: DamageViewProps) {
-    const [selectedMyPokemonIndex, setSelectedMyPokemonIndex] = useState(0);
-    const [selectedOpponentPokemonIndex, setSelectedOpponentPokemonIndex] = useState(0);
-    const myPokemon = myParty.myPokemons[selectedMyPokemonIndex];
-    const opponentPokemon = opponentParty.opponentPokemons[selectedOpponentPokemonIndex];
+export function DamageView({ party, selectedMatchPokemon }: DamageViewProps) {
+    const myPokemon = selectedMatchPokemon.myPokemon;
+    const opponentPokemon = selectedMatchPokemon.opponentPokemon;
     return (
-        <div>
-            <div>自分: {myParty.myPokemons.map((myPokemon, i) => <button key={i} onClick={() => setSelectedMyPokemonIndex(i)}>{i === selectedMyPokemonIndex && '*'}{myPokemon.name}</button>)}</div>
-            <div>相手: {opponentParty.opponentPokemons.map((opponentPokemon, i) => <button key={i} onClick={() => setSelectedOpponentPokemonIndex(i)}>{i === selectedOpponentPokemonIndex && '*'}{opponentPokemon.name}</button>)}</div>
-            {opponentPokemon && <BaseStatView pokemonName={opponentPokemon.name} />}
-            {myPokemon && opponentPokemon && <SpeedView myPokemon={myPokemon} opponentPokemon={opponentPokemon} />}
-            {myPokemon && opponentPokemon && <AttackDamageView myPokemon={myPokemon} opponentPokemon={opponentPokemon} />}
-            {myPokemon && opponentPokemon && <DefendDamageView myPokemon={myPokemon} opponentPokemon={opponentPokemon} />}
+        <div className="DamageView">
+            <div className="DamageViewBasic">
+                {opponentPokemon && <BaseStatView pokemonName={opponentPokemon.name} />}
+                {myPokemon && opponentPokemon && <SpeedView myPokemon={myPokemon} opponentPokemon={opponentPokemon} />}
+            </div>
+            <div className="DamageViewDamage">
+                {myPokemon && opponentPokemon && <AttackDamageView myPokemon={myPokemon} opponentPokemon={opponentPokemon} />}
+                {myPokemon && opponentPokemon && <DefendDamageView myPokemon={myPokemon} opponentPokemon={opponentPokemon} />}
+            </div>
         </div>
     );
 }

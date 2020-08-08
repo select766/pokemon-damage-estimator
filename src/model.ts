@@ -96,6 +96,16 @@ export const EmptyOpponentParty: OpponentParty = {
     opponentPokemons: []
 };
 
+export interface BothParty {
+    myParty: MyParty;
+    opponentParty: OpponentParty;
+}
+
+export const EmptyBothParty: BothParty = {
+    myParty: EmptyMyParty,
+    opponentParty: EmptyOpponentParty,
+};
+
 // [技タイプ][受けるポケモンのタイプ] = ダメージ補正*2
 export const typeMatch: { [key in PokemonType]: { [key in PokemonType]: number } } = {
     '': {

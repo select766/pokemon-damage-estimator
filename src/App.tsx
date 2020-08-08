@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import './App.css';
-import { MyParty, EmptyMyParty, OpponentParty, EmptyOpponentParty } from './model';
-import { MyPartyEditor } from './MyPartyEditor';
-import { OpponentPartyEditor } from './OpponentPartyEditor';
+import { BothParty, EmptyBothParty } from './model';
 import { useLocation, useHistory } from 'react-router-dom';
 import { DamageView } from './DamageView';
 import { ExternalSiteView } from './ExternalSiteView';
+import { PartyEditor } from './PartyEditor';
+import { MatchSelector, SelectedMatch, SelectedMatchPokemon } from './MatchSelector';
 
 function App() {
   const location = useLocation();
@@ -13,20 +13,31 @@ function App() {
 
   const urlSearchParams = new URLSearchParams(location.search);
   const partyJSON = urlSearchParams.get('party');
-  const party: { myParty: MyParty; opponentParty: OpponentParty } = partyJSON ? JSON.parse(partyJSON) : { myParty: EmptyMyParty, opponentParty: EmptyOpponentParty };
-  const setMyParty = (newMyParty: MyParty) => {
-    history.push(`/?party=${JSON.stringify({ ...party, myParty: newMyParty })}`);
+  const party = useMemo(() => partyJSON ? JSON.parse(partyJSON) : EmptyBothParty, [partyJSON]);
+  const setParty = (party: BothParty) => {
+    history.push(`/?party=${JSON.stringify(party)}`);
   }
-  const setOpponentParty = (newOpponentParty: OpponentParty) => {
-    history.push(`/?party=${JSON.stringify({ ...party, opponentParty: newOpponentParty })}`);
-  }
+  const [displayPartyEditor, setDisplayPartyEditor] = useState(true);
+  const [selectedMatch, setSelectedMatch] = useState<SelectedMatch>({ myPokemonIndex: 0, opponentPokemonIndex: 0 });
+  const [selectedMatchPokemon, setSelectedMatchPokemon] = useState<SelectedMatchPokemon>({});
+  const onMatchSelectorChange = useCallback((selectedMatch: SelectedMatch, selectedMatchPokemon: SelectedMatchPokemon) => {
+    setSelectedMatch(selectedMatch);
+    setSelectedMatchPokemon(selectedMatchPokemon);
+  }, []);
 
   return (
     <div className="App">
-      <MyPartyEditor value={party.myParty} onChange={setMyParty} />
-      <OpponentPartyEditor value={party.opponentParty} onChange={setOpponentParty} />
-      <DamageView myParty={party.myParty} opponentParty={party.opponentParty} />
-      <ExternalSiteView pokemonName={party.opponentParty.opponentPokemons[0]?.name || ''} />
+      <div>
+        <input type="checkbox" checked={displayPartyEditor} onChange={(e) => setDisplayPartyEditor(e.target.checked)} />
+        <div style={{ display: displayPartyEditor ? "block" : "none" }}>
+          <PartyEditor party={party} onChange={setParty} />
+        </div>
+      </div>
+      <div>
+      <MatchSelector party={party} selectedMatch={selectedMatch} onChange={onMatchSelectorChange} />
+      <DamageView party={party} selectedMatchPokemon={selectedMatchPokemon} />
+      </div>
+      <ExternalSiteView pokemonName={selectedMatchPokemon.opponentPokemon?.name || ''} />
     </div>
   );
 }
