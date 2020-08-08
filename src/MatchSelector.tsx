@@ -1,5 +1,5 @@
-import { MyParty, OpponentParty, BothParty, MyPokemon, OpponentPokemon } from "./model";
-import React, { useState, useCallback } from "react";
+import { BothParty, MyPokemon, OpponentPokemon } from "./model";
+import React, { useCallback } from "react";
 
 export interface SelectedMatch {
     myPokemonIndex: number;
@@ -31,9 +31,9 @@ export function MatchSelector({ party, selectedMatch, onChange }: MatchSelectorP
         onChange(newMatch, getMatch(party, newMatch));
     }, [party, selectedMatch, onChange]);
     return (
-        <div>
-            <div>自分: {party.myParty.myPokemons.map((myPokemon, i) => <button key={i} onClick={() => setSelectedMyPokemonIndex(i)}>{i === selectedMatch.myPokemonIndex && '*'}{myPokemon.name}</button>)}</div>
-            <div>相手: {party.opponentParty.opponentPokemons.map((opponentPokemon, i) => <button key={i} onClick={() => setSelectedOpponentPokemonIndex(i)}>{i === selectedMatch.opponentPokemonIndex && '*'}{opponentPokemon.name}</button>)}</div>
+        <div className="MatchSelector">
+            <div>自分: {party.myParty.myPokemons.map((myPokemon, i) => myPokemon.chosen && <button key={i} onClick={() => setSelectedMyPokemonIndex(i)} className={i === selectedMatch.myPokemonIndex ? 'selected' : ''}>{myPokemon.name}</button>)}</div>
+            <div>相手: {party.opponentParty.opponentPokemons.map((opponentPokemon, i) => opponentPokemon.chosen && <button key={i} onClick={() => setSelectedOpponentPokemonIndex(i)} className={i === selectedMatch.opponentPokemonIndex ? 'selected' : ''}>{opponentPokemon.name}</button>)}</div>
         </div>
     );
 }

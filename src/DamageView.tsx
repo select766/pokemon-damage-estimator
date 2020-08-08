@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import pokemonDataset from './data/pokemonDataset.json';
-import { MyParty, MyPokemon, PokemonType, PokemonTypeList, MyPokemonMove, MoveKind, OpponentParty, PokemonTypeShort, OpponentPokemon, PokemonData, BothParty } from './model';
+import { MyPokemon, PokemonType, PokemonTypeList, MyPokemonMove, MoveKind, PokemonTypeShort, OpponentPokemon, PokemonData, BothParty } from './model';
 import { CalcStatusNonHP, defaultLevel, ivMax, evMax, evMin, ivMin, CalcDamage, CalcStatusHP } from './damage';
 import { SelectedMatchPokemon } from './MatchSelector';
 
@@ -56,7 +56,7 @@ function AttackDamageView({ myPokemon, opponentPokemon }: { myPokemon: MyPokemon
     return (<table>
         <thead><tr><th>技</th><th>最硬</th><th>H大</th><th>無振</th></tr></thead>
         <tbody>
-            {myPokemon.moves.map((move) => <AttackDamageOneMove key={move.name} myPokemon={myPokemon} move={move} opponentData={opponentData} />)}
+            {myPokemon.moves.map((move, i) => <AttackDamageOneMove key={i} myPokemon={myPokemon} move={move} opponentData={opponentData} />)}
         </tbody>
     </table>)
 }
@@ -100,7 +100,7 @@ export interface DamageViewProps {
     selectedMatchPokemon: SelectedMatchPokemon;
 }
 
-export function DamageView({ party, selectedMatchPokemon }: DamageViewProps) {
+export function DamageView({ selectedMatchPokemon }: DamageViewProps) {
     const myPokemon = selectedMatchPokemon.myPokemon;
     const opponentPokemon = selectedMatchPokemon.opponentPokemon;
     return (

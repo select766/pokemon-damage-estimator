@@ -6,10 +6,10 @@ import { OpponentPartyEditor } from './OpponentPartyEditor';
 export function PartyEditor(props: { party: BothParty, onChange: (party: BothParty) => void }) {
     const setMyParty = useCallback((newMyParty: MyParty) => {
         props.onChange({ ...props.party, myParty: newMyParty });
-    }, [props.party, props.onChange]);
+    }, [props]);
     const setOpponentParty = useCallback((newOpponentParty: OpponentParty) => {
         props.onChange({ ...props.party, opponentParty: newOpponentParty });
-    }, [props.party, props.onChange]);
+    }, [props]);
 
     return (
         <div className="PartyEditor">

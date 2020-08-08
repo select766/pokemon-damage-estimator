@@ -8,6 +8,10 @@
     width: 300px;
 }
 
+.ExternalSiteView {
+    margin-left: auto;
+}
+
 .ExternalSiteView iframe {
     width: 768px;
     height: 100%;
@@ -27,4 +31,8 @@
 .DamageViewDamage {
     display: flex;
     flex-wrap: wrap;
+}
+
+.MatchSelector .selected {
+    background-color: orange;
 }

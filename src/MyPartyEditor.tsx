@@ -15,15 +15,14 @@ function PokemonTypeSelect(props: { value: PokemonType, onChange: (value: Pokemo
     </select>);
 }
 
-function MoveInput(props: { value: MyPokemonMove, onChange: (value: MyPokemonMove) => void }) {
-    const { value, onChange } = props;
+function MoveInput({value, onChange}: { value: MyPokemonMove, onChange: (value: MyPokemonMove) => void }) {
     const onSelectMoveName = useCallback((name: string) => {
         const moveInfo = moveDataset.find((m) => m.name === name);
         if (!moveInfo) {
             return;
         }
         onChange({ name, type: moveInfo.type as PokemonType, moveKind: moveInfo.moveKind as MoveKind, power: moveInfo.power });
-    }, [value]);
+    }, [onChange]);
     return (<div>
         技名:<select value={value.name} onChange={(e) => onSelectMoveName(e.target.value)}>
             <option value="">---技選択---</option>
@@ -39,9 +38,7 @@ function MoveInput(props: { value: MyPokemonMove, onChange: (value: MyPokemonMov
     );
 }
 
-export function MyPokemonEditor(props: MyPokemonEditorProps) {
-    const pokemon = props.value;
-    const [newMove, setNewMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
+export function MyPokemonEditor({value, onChange}: MyPokemonEditorProps) {    const [newMove, setNewMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
     const [newDynamaxMove, setNewDinamaxMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
     useEffect(() => {
         // 通常技に応じて対応するダイマックス技候補を表示
@@ -53,10 +50,10 @@ export function MyPokemonEditor(props: MyPokemonEditorProps) {
     }, [newMove]);
     const onSelectPokemon = useCallback((name: string) => {
         const d = pokemonDataset[name as keyof typeof pokemonDataset] as PokemonData;
-        props.onChange({ ...pokemon, name, attrs: { ...pokemon.attrs, type1: d.type1, type2: d.type2 } });
-    }, [pokemon, props.onChange]);
+        onChange({ ...value, name, attrs: { ...value.attrs, type1: d.type1, type2: d.type2 } });
+    }, [value, onChange]);
     const onSortMoveClick = useCallback((index: number, direction: number) => {
-        const newMoves = [...pokemon.moves];
+        const newMoves = [...value.moves];
         const newIndex = index + direction;
         if (newIndex < 0 || newIndex >= newMoves.length) {
             return;
@@ -64,24 +61,24 @@ export function MyPokemonEditor(props: MyPokemonEditorProps) {
         const tmp = newMoves[index];
         newMoves[index] = newMoves[newIndex];
         newMoves[newIndex] = tmp;
-        props.onChange({ ...pokemon, moves: newMoves });
-    }, [props]);
+        onChange({ ...value, moves: newMoves });
+    }, [value, onChange]);
     const onDeleteMove = useCallback((index: number) => {
-        const newMoves = [...pokemon.moves];
+        const newMoves = [...value.moves];
         newMoves.splice(index, 1);
-        props.onChange({ ...pokemon, moves: newMoves });
-    }, [pokemon, props.onChange]);
+        onChange({ ...value, moves: newMoves });
+    }, [value, onChange]);
     return (<div>
-        <PokemonSelect value={pokemon.name} onChange={(value) => onSelectPokemon(value)} />
-        タイプ1:<PokemonTypeSelect value={pokemon.attrs.type1} onChange={(value) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, type1: value } })} />
-        タイプ2:<PokemonTypeSelect value={pokemon.attrs.type2} onChange={(value) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, type2: value } })} />
-        HP: <input type="number" min={0} max={999} value={pokemon.attrs.hp.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, hp: Number(e.target.value) } })} />
-        A: <input type="number" min={0} max={999} value={pokemon.attrs.a.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, a: Number(e.target.value) } })} />
-        B: <input type="number" min={0} max={999} value={pokemon.attrs.b.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, b: Number(e.target.value) } })} />
-        C: <input type="number" min={0} max={999} value={pokemon.attrs.c.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, c: Number(e.target.value) } })} />
-        D: <input type="number" min={0} max={999} value={pokemon.attrs.d.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, d: Number(e.target.value) } })} />
-        S: <input type="number" min={0} max={999} value={pokemon.attrs.s.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, s: Number(e.target.value) } })} />
-        技: <ul>{pokemon.moves.map((move, i) => (
+        <PokemonSelect value={value.name} onChange={(value) => onSelectPokemon(value)} />
+        タイプ1:<PokemonTypeSelect value={value.attrs.type1} onChange={(t) => onChange({ ...value, attrs: { ...value.attrs, type1: t } })} />
+        タイプ2:<PokemonTypeSelect value={value.attrs.type2} onChange={(t) => onChange({ ...value, attrs: { ...value.attrs, type2: t } })} />
+        HP: <input type="number" min={0} max={999} value={value.attrs.hp.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, hp: Number(e.target.value) } })} />
+        A: <input type="number" min={0} max={999} value={value.attrs.a.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, a: Number(e.target.value) } })} />
+        B: <input type="number" min={0} max={999} value={value.attrs.b.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, b: Number(e.target.value) } })} />
+        C: <input type="number" min={0} max={999} value={value.attrs.c.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, c: Number(e.target.value) } })} />
+        D: <input type="number" min={0} max={999} value={value.attrs.d.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, d: Number(e.target.value) } })} />
+        S: <input type="number" min={0} max={999} value={value.attrs.s.toString()} onChange={(e) => onChange({ ...value, attrs: { ...value.attrs, s: Number(e.target.value) } })} />
+        技: <ul>{value.moves.map((move, i) => (
             <li>{move.name}({PokemonTypeShort[move.type]}{move.power}{MoveKindShort[move.moveKind]})
                 <button onClick={(e) => onSortMoveClick(i, -1)}>↑</button>
                 <button onClick={(e) => onSortMoveClick(i, 1)}>↓</button>
@@ -89,12 +86,12 @@ export function MyPokemonEditor(props: MyPokemonEditorProps) {
             </li>))}</ul>
         <MoveInput value={newMove} onChange={setNewMove} />
         <button onClick={() => {
-            props.onChange({ ...pokemon, moves: [...pokemon.moves, newMove] });
+            onChange({ ...value, moves: [...value.moves, newMove] });
             setNewMove(EmptyMyPokemonMove);
         }}>技追加</button>
         <MoveInput value={newDynamaxMove} onChange={setNewDinamaxMove} />
         <button onClick={() => {
-            props.onChange({ ...pokemon, moves: [...pokemon.moves, newDynamaxMove] });
+            onChange({ ...value, moves: [...value.moves, newDynamaxMove] });
             setNewDinamaxMove(EmptyMyPokemonMove);
         }}>DM技追加</button>
         <a href="https://wiki.xn--rckteqa2e.com/wiki/%E3%83%80%E3%82%A4%E3%83%9E%E3%83%83%E3%82%AF%E3%82%B9%E3%82%8F%E3%81%96" target="_blank" rel="noreferrer noopener">DM情報</a>

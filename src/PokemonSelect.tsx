@@ -9,7 +9,7 @@ export interface PokemonSelectProps {
     onChange: (value: string) => void;
 }
 
-export const PokemonSelect = React.forwardRef<HTMLInputElement, PokemonSelectProps>((props: PokemonSelectProps, ref) => {
+export const PokemonSelect = React.forwardRef<HTMLInputElement, PokemonSelectProps>(({value, onChange}: PokemonSelectProps, ref) => {
     const [romaji, setRomaji] = useState('');
     const [filteredPokemons, setFilteredPokemons] = useState(sortedPokemons);
     const onRomajiChange = useCallback((newRomaji: string) => {
@@ -23,17 +23,17 @@ export const PokemonSelect = React.forwardRef<HTMLInputElement, PokemonSelectPro
             filtered = sortedPokemons;
         }
         setFilteredPokemons(filtered);
-        props.onChange(filtered[0]);
-    }, []);
+        onChange(filtered[0]);
+    }, [onChange]);
     useEffect(() => {
-        if (props.value.length === 0) {
+        if (value.length === 0) {
             setRomaji('');
         }
-    }, [props.value]);
+    }, [value]);
     
     return (<span>
         <input ref={ref} type="text" value={romaji} onChange={(e) => onRomajiChange(e.target.value)} />
-        <select value={props.value} onChange={(e) => props.onChange(e.target.value)}>
+        <select value={value} onChange={(e) => onChange(e.target.value)}>
         <option value="">---ポケモン選択---</option>
         {filteredPokemons.map((name) => <option key={name} value={name}>{name}</option>)}
     </select></span>);

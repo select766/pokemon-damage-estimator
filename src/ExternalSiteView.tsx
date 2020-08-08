@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 /**
  * ポケモン名を http://wiki.pokebattle.net/ でのURLで使われる名前に変換
@@ -36,9 +36,18 @@ function pokemonNameToURL(pokemonName: string) {
     return `http://wiki.pokebattle.net/${pokemonNameToCanonical(pokemonName)}`;
 }
 
+function pushCachedUrl(cachedUrls: string[], url: string): string[] {
+    cachedUrls = cachedUrls.filter((cachedUrl) => cachedUrl !== url);
+    cachedUrls.unshift(url);
+    cachedUrls = cachedUrls.slice(0, 10);
+    return cachedUrls;
+}
+
 export function ExternalSiteView(props: { pokemonName: string }) {
     const url = useMemo(() => pokemonNameToURL(props.pokemonName), [props.pokemonName]);
+    const cachedUrls = useRef<string[]>([]);
+    cachedUrls.current = pushCachedUrl(cachedUrls.current, url);
     return (<div className="ExternalSiteView">
-        <iframe src={url} referrerPolicy='no-referrer'></iframe>
+        {cachedUrls.current.map((cachedUrl) => <iframe key={cachedUrl} style={{ display: cachedUrl === url ? 'block' : 'none' }} title="External Site" src={cachedUrl} referrerPolicy='no-referrer'></iframe>)}
     </div>)
 }
