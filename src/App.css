@@ -52,3 +52,7 @@
 .MatchSelector .selected {
     background-color: orange;
 }
+
+.MatchSelector .chosen {
+    text-decoration: underline solid red;
+}

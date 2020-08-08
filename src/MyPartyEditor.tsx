@@ -144,8 +144,7 @@ export function MyPartyEditor(props: MyPartyEditorProps) {
                 <table>
                     <tbody>
                         {pokes.map((poke, i) => (<tr key={i}>
-                            <td><input type="checkbox" checked={poke.chosen} onChange={(e) => onChosenChange(i, e.target.checked)} /></td>
-                            <td>{poke.name}</td>
+                            <td><label><input type="checkbox" checked={poke.chosen} onChange={(e) => onChosenChange(i, e.target.checked)} />{poke.name}</label></td>
                             <td><button onClick={(e) => onSortPokemonClick(i, -1)}>↑</button></td>
                             <td><button onClick={(e) => onSortPokemonClick(i, 1)}>↓</button></td>
                             <td><button onClick={(e) => onEditPokemonClick(i)}>🖊</button></td>

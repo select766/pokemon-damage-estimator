@@ -32,8 +32,8 @@ export function MatchSelector({ party, selectedMatch, onChange }: MatchSelectorP
     }, [party, selectedMatch, onChange]);
     return (
         <div className="MatchSelector">
-            <div>自分: {party.myParty.myPokemons.map((myPokemon, i) => myPokemon.chosen && <button key={i} onClick={() => setSelectedMyPokemonIndex(i)} className={i === selectedMatch.myPokemonIndex ? 'selected' : ''}>{myPokemon.name}</button>)}</div>
-            <div>相手: {party.opponentParty.opponentPokemons.map((opponentPokemon, i) => opponentPokemon.chosen && <button key={i} onClick={() => setSelectedOpponentPokemonIndex(i)} className={i === selectedMatch.opponentPokemonIndex ? 'selected' : ''}>{opponentPokemon.name}</button>)}</div>
+            <div>自分: {party.myParty.myPokemons.map((myPokemon, i) => <button key={i} onClick={() => setSelectedMyPokemonIndex(i)} className={(i === selectedMatch.myPokemonIndex ? 'selected ' : ' ') + (myPokemon.chosen ? 'chosen ' : ' ')}>{myPokemon.name}</button>)}</div>
+            <div>相手: {party.opponentParty.opponentPokemons.map((opponentPokemon, i) => <button key={i} onClick={() => setSelectedOpponentPokemonIndex(i)} className={(i === selectedMatch.opponentPokemonIndex ? 'selected ' : '') + (opponentPokemon.chosen ? 'chosen ' : ' ')}>{opponentPokemon.name}</button>)}</div>
         </div>
     );
 }

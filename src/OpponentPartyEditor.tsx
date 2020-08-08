@@ -13,7 +13,7 @@ export function OpponentPartyEditor(props: OpponentPartyEditorProps) {
     const pokes = props.value.opponentPokemons;
     const onAddPokemonClick = useCallback(() => {
         const newPokes = [...props.value.opponentPokemons];
-        newPokes.push({ name: newPokemon, chosen: true });
+        newPokes.push({ name: newPokemon, chosen: false });
         props.onChange({ ...props.value, opponentPokemons: newPokes });
         setNewPokemon('');
         setTimeout(() => {
@@ -33,13 +33,13 @@ export function OpponentPartyEditor(props: OpponentPartyEditorProps) {
     return (<div>
         <h2>相手</h2>
         <div>
-            <PokemonSelect ref={newPokemonInputRef} value={newPokemon} onChange={setNewPokemon} />
+            <PokemonSelect ref={newPokemonInputRef} value={newPokemon} onChange={setNewPokemon} onSubmit={onAddPokemonClick} />
             <button onClick={onAddPokemonClick}>追加</button>
         </div>
         <div>
             <table>
                 <tbody>
-                    {pokes.map((poke, i) => <tr key={i}><td><input type="checkbox" checked={poke.chosen} onChange={(e) => onChosenChange(i, e.target.checked)} /></td><td>{poke.name}</td><td><button onClick={(e) => onDeletePokemonClick(i)}>🗑</button></td></tr>)}
+                    {pokes.map((poke, i) => <tr key={i}><td><label><input type="checkbox" checked={poke.chosen} onChange={(e) => onChosenChange(i, e.target.checked)} />{poke.name}</label></td><td><button onClick={(e) => onDeletePokemonClick(i)}>🗑</button></td></tr>)}
                 </tbody>
             </table>
         </div>
