@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { MyParty, MyPokemon, PokemonType, PokemonTypeList, EmptyMyPokemon, MyPokemonMove, MoveKind, EmptyMyPokemonMove, PokemonTypeShort } from './model';
+import { MyParty, MyPokemon, PokemonType, PokemonTypeList, EmptyMyPokemon, MyPokemonMove, MoveKind, EmptyMyPokemonMove, PokemonTypeShort, MoveKindLong, MoveKindList, MoveKindShort } from './model';
 import { PokemonSelect } from './PokemonSelect';
+import pokemonDataset from './data/pokemonDataset.json';
+import moveDataset from './data/moveDataset.json';
 
 export interface MyPokemonEditorProps {
     value: MyPokemon;
@@ -15,13 +17,22 @@ function PokemonTypeSelect(props: { value: PokemonType, onChange: (value: Pokemo
 
 function MoveInput(props: { value: MyPokemonMove, onChange: (value: MyPokemonMove) => void }) {
     const { value, onChange } = props;
+    const onSelectMoveName = useCallback((name: string) => {
+        const moveInfo = moveDataset.find((m) => m.name === name);
+        if (!moveInfo) {
+            return;
+        }
+        onChange({ name, type: moveInfo.type as PokemonType, moveKind: moveInfo.moveKind as MoveKind, power: moveInfo.power });
+    }, [value]);
     return (<div>
-        技名:<input type="text" value={value.name} onChange={(e) => onChange({ ...value, name: e.target.value })} />
+        技名:<select value={value.name} onChange={(e) => onSelectMoveName(e.target.value)}>
+            <option value="">---技選択---</option>
+            {moveDataset.map((moveInfo) => <option value={moveInfo.name}>{moveInfo.name}</option>)}
+        </select>
+        <input type="text" value={value.name} onChange={(e) => onChange({ ...value, name: e.target.value })} />
         技タイプ:<PokemonTypeSelect value={value.type} onChange={(type) => onChange({ ...value, type })} />
         種別:<select value={value.moveKind} onChange={(e) => onChange({ ...value, moveKind: e.target.value as MoveKind })}>
-            <option value="physical">物理</option>
-            <option value="special">特殊</option>
-            <option value="status">変化</option>
+            {MoveKindList.map((moveKind) => <option value={moveKind}>{MoveKindLong[moveKind]}</option>)}
         </select>
         威力: <input type="number" value={value.power.toString()} min={0} max={999} onChange={(e) => onChange({ ...value, power: Number(e.target.value) })} />
     </div>
@@ -31,8 +42,17 @@ function MoveInput(props: { value: MyPokemonMove, onChange: (value: MyPokemonMov
 export function MyPokemonEditor(props: MyPokemonEditorProps) {
     const pokemon = props.value;
     const [newMove, setNewMove] = useState<MyPokemonMove>(EmptyMyPokemonMove);
+    const onSelectPokemon = useCallback((name: string) => {
+        const d = pokemonDataset[name as keyof typeof pokemonDataset] as PokemonData;
+        props.onChange({ ...pokemon, name, attrs: { ...pokemon.attrs, type1: d.type1, type2: d.type2 } });
+    }, [pokemon, props.onChange]);
+    const onDeleteMove = useCallback((index: number) => {
+        const newMoves = [...pokemon.moves];
+        newMoves.splice(index, 1);
+        props.onChange({ ...pokemon, moves: newMoves });
+    }, [pokemon, props.onChange]);
     return (<div>
-        <PokemonSelect value={pokemon.name} onChange={(value) => props.onChange({ ...pokemon, name: value })} />
+        <PokemonSelect value={pokemon.name} onChange={(value) => onSelectPokemon(value)} />
         タイプ1:<PokemonTypeSelect value={pokemon.attrs.type1} onChange={(value) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, type1: value } })} />
         タイプ2:<PokemonTypeSelect value={pokemon.attrs.type2} onChange={(value) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, type2: value } })} />
         HP: <input type="number" min={0} max={999} value={pokemon.attrs.hp.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, hp: Number(e.target.value) } })} />
@@ -41,12 +61,13 @@ export function MyPokemonEditor(props: MyPokemonEditorProps) {
         C: <input type="number" min={0} max={999} value={pokemon.attrs.c.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, c: Number(e.target.value) } })} />
         D: <input type="number" min={0} max={999} value={pokemon.attrs.d.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, d: Number(e.target.value) } })} />
         S: <input type="number" min={0} max={999} value={pokemon.attrs.s.toString()} onChange={(e) => props.onChange({ ...pokemon, attrs: { ...pokemon.attrs, s: Number(e.target.value) } })} />
-        技: <ul>{pokemon.moves.map((move) => <li>{move.name},{move.type},{move.power},{move.moveKind}</li>)}</ul>
+        技: <ul>{pokemon.moves.map((move, i) => <li>{move.name}({PokemonTypeShort[move.type]}{move.power}{MoveKindShort[move.moveKind]})<button onClick={(e) => onDeleteMove(i)}>🗑</button></li>)}</ul>
         <MoveInput value={newMove} onChange={setNewMove} />
         <button onClick={() => {
             props.onChange({ ...pokemon, moves: [...pokemon.moves, newMove] });
             setNewMove(EmptyMyPokemonMove);
         }}>技追加</button>
+        <a href="https://wiki.xn--rckteqa2e.com/wiki/%E3%83%80%E3%82%A4%E3%83%9E%E3%83%83%E3%82%AF%E3%82%B9%E3%82%8F%E3%81%96" target="_blank" rel="noreferrer noopener">DM情報</a>
     </div>);
 }
 

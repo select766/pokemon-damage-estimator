@@ -1,4 +1,15 @@
 export type MoveKind = 'physical' | 'special' | 'status';
+export const MoveKindList: MoveKind[] = ['physical', 'special', 'status'];
+export const MoveKindLong: { [key in MoveKind]: string } = {
+    'physical': '物理',
+    'special': '特殊',
+    'status': '変化',
+};
+export const MoveKindShort: { [key in MoveKind]: string } = {
+    'physical': '物',
+    'special': '特',
+    'status': '変',
+};
 
 export type PokemonType = '' | 'ノーマル' | 'かくとう' | 'ひこう' | 'どく' | 'じめん' | 'いわ' | 'むし' | 'ゴースト' | 'はがね' | 'ほのお' | 'みず' | 'くさ' | 'でんき' | 'エスパー' | 'こおり' | 'ドラゴン' | 'あく' | 'フェアリー';
 export const PokemonTypeList: PokemonType[] = ['', 'ノーマル', 'かくとう', 'ひこう', 'どく', 'じめん', 'いわ', 'むし', 'ゴースト', 'はがね', 'ほのお', 'みず', 'くさ', 'でんき', 'エスパー', 'こおり', 'ドラゴン', 'あく', 'フェアリー'];
