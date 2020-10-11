@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/pokemon-damage-estimator/static/css/main.2c94e695.chunk.css",
-    "main.js": "/pokemon-damage-estimator/static/js/main.e7ad3c75.chunk.js",
-    "main.js.map": "/pokemon-damage-estimator/static/js/main.e7ad3c75.chunk.js.map",
+    "main.js": "/pokemon-damage-estimator/static/js/main.ae236e54.chunk.js",
+    "main.js.map": "/pokemon-damage-estimator/static/js/main.ae236e54.chunk.js.map",
     "runtime-main.js": "/pokemon-damage-estimator/static/js/runtime-main.059fe58b.js",
     "runtime-main.js.map": "/pokemon-damage-estimator/static/js/runtime-main.059fe58b.js.map",
     "static/js/2.fc7b3537.chunk.js": "/pokemon-damage-estimator/static/js/2.fc7b3537.chunk.js",
     "static/js/2.fc7b3537.chunk.js.map": "/pokemon-damage-estimator/static/js/2.fc7b3537.chunk.js.map",
     "index.html": "/pokemon-damage-estimator/index.html",
-    "precache-manifest.2e99278f3d11314c30d13d7298cf1e18.js": "/pokemon-damage-estimator/precache-manifest.2e99278f3d11314c30d13d7298cf1e18.js",
+    "precache-manifest.90b7dec11e99b755885e85682c0ade5a.js": "/pokemon-damage-estimator/precache-manifest.90b7dec11e99b755885e85682c0ade5a.js",
     "service-worker.js": "/pokemon-damage-estimator/service-worker.js",
     "static/css/main.2c94e695.chunk.css.map": "/pokemon-damage-estimator/static/css/main.2c94e695.chunk.css.map",
     "static/js/2.fc7b3537.chunk.js.LICENSE.txt": "/pokemon-damage-estimator/static/js/2.fc7b3537.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.059fe58b.js",
     "static/js/2.fc7b3537.chunk.js",
     "static/css/main.2c94e695.chunk.css",
-    "static/js/main.e7ad3c75.chunk.js"
+    "static/js/main.ae236e54.chunk.js"
   ]
 }
