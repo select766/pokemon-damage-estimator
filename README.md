@@ -1,3 +1,22 @@
+# ポケモンダメージ予測ツール
+
+# 開発・デプロイ
+## 初期化
+```
+yarn
+```
+
+## ポケモン使用率DBへのリンク
+`src\pokemonNameToUrlPokedb.ts` の指示に従い、ランクバトルの最新シーズン情報にリンクを差し替える。
+
+## デプロイ
+```
+yarn deploy
+```
+
+=> `gh-pages`ブランチの`/`にビルド結果が置かれる。github側ではGitHub Pagesの設定でSource: `gh-pages`, `/ (root)`を選択。
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
